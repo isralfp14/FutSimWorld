@@ -1,13 +1,24 @@
 document.addEventListener("DOMContentLoaded", function () {
 
+    let jornadaActual = 1;
+    generarCalendario("ESP1");
+
+
+
     const marcador = document.querySelectorAll("input[name=score]");
     // const contenedorTabla = document.querySelector(".container");
     // const tablaClasificacion = document.querySelector(".tabla-clasificacion");
     const filasTabla = document.querySelectorAll(".tabla-clasificacion tbody tr");
+    const btnAnterior = document.querySelectorAll(".botones input[type=button]")[0];
     const btnCalcular = document.querySelectorAll(".botones input[type=button]")[1];
     const btnReset = document.querySelectorAll(".botones input[type=button]")[2];
+    const btnSiguiente = document.querySelectorAll(".botones input[type=button]")[3];
+
     pintarTabla();
     reseteoMarcador();
+    disableAnterior();
+
+
 
     let puntos;
     let victorias;
@@ -289,6 +300,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
     });
 
+    //Boton anterior jornada
+    btnAnterior.addEventListener("click", function () {
+        if (jornadaActual > 1) {
+            document.getElementById(`tabla-jornada-${jornadaActual}`).style.display = "none";
+            jornadaActual--;
+            document.getElementById(`tabla-jornada-${jornadaActual}`).style.display = "block";
+        }
+
+        //"Rehacer" toda la botonera para que se actualice bien
+        disableAnterior();
+        disableSiguiente();
+    });
+
+    //Boton siguiente jornada
+    btnSiguiente.addEventListener("click", function () {
+        if (jornadaActual < 38) {
+            document.getElementById(`tabla-jornada-${jornadaActual}`).style.display = "none";
+            jornadaActual++;
+            document.getElementById(`tabla-jornada-${jornadaActual}`).style.display = "block";
+
+        }
+
+        disableAnterior();
+        disableSiguiente();
+    });
+
     //Boton para resetear todo
     btnReset.addEventListener("click", function () {
         reseteoMarcador();
@@ -308,6 +345,28 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
+    }
+
+    function disableAnterior() {
+        if (jornadaActual == 1) {
+            btnAnterior.disabled = true;
+            btnAnterior.className = "bg-gray-400 text-gray-600 font-bold py-2 px-6 rounded transition-colors duration-300";
+        }
+        else {
+            btnAnterior.disabled = false;
+            btnAnterior.className = "bg-slate-700 text-white font-bold py-2 px-6 rounded cursor-pointer transition-colors duration-300 hover:bg-red-700";
+        }
+    }
+
+    function disableSiguiente() {
+        if (jornadaActual == 38) {
+            btnSiguiente.disabled = true;
+            btnSiguiente.className = "bg-gray-400 text-gray-600 font-bold py-2 px-6 rounded transition-colors duration-300";
+        }
+        else {
+            btnSiguiente.disabled = false;
+            btnSiguiente.className = "bg-slate-700 text-white font-bold py-2 px-6 rounded cursor-pointer transition-colors duration-300 hover:bg-red-700";
+        }
     }
 
     function reseteoMarcador() {
@@ -343,3 +402,97 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
 });
+
+function generarCalendario(ligaId) {
+    const containerJornadas = document.getElementById("contenedor-jornadas");
+    const jornadas = bbddLigas[ligaId];
+    for (let i = 0; i < jornadas.length; i++) {
+        //Tabla
+        const tabla = document.createElement("table");
+        tabla.id = `tabla-jornada-${i + 1}`;
+        tabla.className = "jornada-calendario";
+
+        if (i === 0) {
+            tabla.style.display = "block";
+        }
+        else {
+            tabla.style.display = "none";
+        }
+
+        //Cabecera
+        const thead = document.createElement("thead");
+        const trHead = document.createElement("tr");
+        const th = document.createElement("th");
+        th.colSpan = 7;
+        th.className = "text-2xl pb-4 uppercase tracking-widest text-slate-300";
+        th.textContent = `Jornada ${i + 1}`;
+
+        trHead.appendChild(th);
+        thead.appendChild(trHead);
+        tabla.appendChild(thead);
+
+
+        //Cuerpo
+        const tbody = document.createElement("tbody");
+        const partidosJorActual = jornadas[i];
+
+        for (let j = 0; j < partidosJorActual.length; j++) {
+            let partido = partidosJorActual[j];
+
+            if (partido.local === "") continue;
+
+            const trPartido = document.createElement("tr");
+
+            //Datos locales
+            const tdLocal = document.createElement("td");
+            tdLocal.className = "local";
+            tdLocal.textContent = partido.local;
+
+            const tdImgLocal = document.createElement("td");
+            const imgLocal = document.createElement("img");
+            imgLocal.src = `../img/laliga/${escudosEquipos[ligaId][partido.local]}`;
+            imgLocal.alt = partido.local;
+            tdImgLocal.appendChild(imgLocal);
+
+            const tdGolesLocal = document.createElement("td");
+            const inputLocal = document.createElement("input");
+            inputLocal.type = "text";
+            inputLocal.name = "score";
+            inputLocal.size = 2;
+            inputLocal.maxLength = 3;
+            tdGolesLocal.appendChild(inputLocal);
+
+            //Guioncito
+            const tdGuion = document.createElement("td");
+            tdGuion.textContent = "-";
+
+            //Datos visitantes
+            const tdVisitante = document.createElement("td");
+            tdVisitante.className = "visitante";
+            tdVisitante.textContent = partido.visitante;
+
+            const tdImgVisit = document.createElement("td");
+            const imgVisit = document.createElement("img");
+            imgVisit.src = `../img/laliga/${escudosEquipos[ligaId][partido.visitante]}`;
+            imgVisit.alt = partido.visitante;
+            tdImgVisit.appendChild(imgVisit);
+
+            const tdGolesVisit = document.createElement("td");
+            const inputVisit = document.createElement("input");
+            inputVisit.type = "text";
+            inputVisit.name = "score";
+            inputVisit.size = 2;
+            inputVisit.maxLength = 3;
+            tdGolesVisit.appendChild(inputVisit);
+
+            //ENSAMBLAR TODA LA FILA
+            trPartido.append(tdLocal, tdImgLocal, tdGolesLocal, tdGuion, tdGolesVisit, tdImgVisit, tdVisitante);
+
+            tbody.appendChild(trPartido);
+        }
+        tabla.appendChild(tbody);
+        containerJornadas.appendChild(tabla);
+
+    }
+
+}
