@@ -23,7 +23,28 @@ const escudosEquipos = {
     },
 
     "ESP2": {
-        //Coming soon
+        "Albacete Balompié": "albacete.png",
+        "UD Almería": "almeria.png",
+        "FC Andorra": "andorra.png",
+        "Burgos CF": "burgos.png",
+        "Cádiz CF": "cadiz.png",
+        "CD Castellón": "castellon.png",
+        "Celta Fortuna": "celta_vigo.png",
+        "AD Ceuta": "ceuta.png",
+        "Córdoba CF": "cordoba.png",
+        "SD Eibar": "eibar.png",
+        "CD Eldense": "eldense.png",
+        "Girona FC": "girona.png",
+        "Granada CF": "granada.png",
+        "UD Las Palmas": "las_palmas.png",
+        "CD Leganés": "leganes.png",
+        "RCD Mallorca": "mallorca.png",
+        "Real Oviedo": "oviedo.png",
+        "Real Sociedad 'B'": "real_sociedad.png",
+        "CE Sabadell": "sabadell.png",
+        "Real Sporting": "sporting.png",
+        "CD Tenerife": "tenerife.png",
+        "Real Valladolid": "valladolid.png"
     },
 
     "ENG1": {
@@ -576,18 +597,48 @@ const bbddLigas = {
     "ESP2": [
         // Jornada 1
         [
-            { local: "", visitante: "" },
-            { local: "", visitante: "" },
-            { local: "", visitante: "" },
-            { local: "", visitante: "" },
-            { local: "", visitante: "" },
-            { local: "", visitante: "" },
-            { local: "", visitante: "" },
-            { local: "", visitante: "" },
-            { local: "", visitante: "" },
-            { local: "", visitante: "" },
-            { local: "", visitante: "" },
+            { local: almeria, visitante: eldense },
+            { local: andorra, visitante: ceuta },
+            { local: burgos, visitante: cordoba },
+            { local: cadiz, visitante: celtaB },
+            { local: eibar, visitante: tenerife },
+            { local: girona, visitante: leganes },
+            { local: lpalmas, visitante: albacete },
+            { local: mallorca, visitante: valladolid },
+            { local: oviedo, visitante: granada },
+            { local: rsociedadB, visitante: castellon },
+            { local: sporting, visitante: sabadell },
         ],
+
+        // Jornada 2
+        [
+            { local: albacete, visitante: rsociedadB },
+            { local: castellon, visitante: sabadell },
+            { local: celtaB, visitante: andorra },
+            { local: ceuta, visitante: lpalmas },
+            { local: cordoba, visitante: girona },
+            { local: eibar, visitante: valladolid },
+            { local: eldense, visitante: cadiz },
+            { local: granada, visitante: mallorca },
+            { local: oviedo, visitante: leganes },
+            { local: sporting, visitante: burgos },
+            { local: tenerife, visitante: almeria },
+        ],
+
+        // // Jornada 3
+        // [
+        //     { local: , visitante:  },
+        //     { local: , visitante:  },
+        //     { local: , visitante:  },
+        //     { local: , visitante:  },
+        //     { local: , visitante:  },
+        //     { local: , visitante:  },
+        //     { local: , visitante:  },
+        //     { local: , visitante:  },
+        //     { local: , visitante:  },
+        //     { local: , visitante:  },
+        //     { local: , visitante:  },
+        // ],
     ],
 
     /* - - - - - - - PREMIER LEAGUE - - - - - - - */

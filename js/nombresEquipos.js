@@ -22,3 +22,26 @@ const valencia = "Valencia CF";
 const villarreal = "Villarreal CF";
 
 //================ ESP2 ====================
+
+const albacete = "Albacete Balompié";
+const almeria = "UD Almería";
+const andorra = "FC Andorra";
+const burgos = "Burgos CF";
+const cadiz = "Cádiz CF";
+const castellon = "CD Castellón";
+const celtaB = "Celta Fortuna";
+const ceuta = "AD Ceuta";
+const cordoba = "Córdoba CF";
+const eibar = "SD Eibar";
+const eldense = "CD Eldense";
+const girona = "Girona FC";
+const granada = "Granada CF";
+const lpalmas = "UD Las Palmas";
+const leganes = "CD Leganés";
+const mallorca = "RCD Mallorca";
+const oviedo = "Real Oviedo";
+const rsociedadB = "Real Sociedad 'B'";
+const sabadell = "CE Sabadell";
+const sporting = "Real Sporting";
+const tenerife = "CD Tenerife";
+const valladolid = "Real Valladolid";

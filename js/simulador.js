@@ -1,14 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     let jornadaActual = 1;
-    generarCalendario("ESP1");
+    let ligaActual = "ESP2";
 
 
+    generarCalendario(ligaActual);
+    generarTablaClasif(ligaActual);
 
     const marcador = document.querySelectorAll("input[name=score]");
     // const contenedorTabla = document.querySelector(".container");
     // const tablaClasificacion = document.querySelector(".tabla-clasificacion");
-    const filasTabla = document.querySelectorAll(".tabla-clasificacion tbody tr");
+    let filasTabla = document.querySelectorAll(".tabla-clasificacion tbody tr");
     const btnAnterior = document.querySelectorAll(".botones input[type=button]")[0];
     const btnCalcular = document.querySelectorAll(".botones input[type=button]")[1];
     const btnReset = document.querySelectorAll(".botones input[type=button]")[2];
@@ -17,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     pintarTabla();
     reseteoMarcador();
     disableAnterior();
-
+    cambiarCabecera();
 
 
     let puntos;
@@ -383,25 +385,58 @@ document.addEventListener("DOMContentLoaded", function () {
             // Limpiar clases
             filasActuales[i].className = "border-b border-slate-700 text-center";
 
-            if (i < 4) {
-                filasActuales[i].classList.add("bg-blue-900");
+            if (ligaActual == "ESP1") {
+                if (i < 4) {
+                    filasActuales[i].classList.add("bg-blue-900");
+                }
+                else if (i === 4) {
+                    filasActuales[i].classList.add("bg-orange-600");
+                }
+                else if (i === 5) {
+                    filasActuales[i].classList.add("bg-green-600");
+                }
+                else if (i >= 17) {
+                    filasActuales[i].classList.add("bg-red-700");
+                }
+                else {
+                    filasActuales[i].classList.add("bg-slate-800");
+                }
             }
-            else if (i === 4) {
-                filasActuales[i].classList.add("bg-orange-600");
+            else if (ligaActual == "ESP2") {
+                if (i < 2) {
+                    filasActuales[i].classList.add("bg-blue-900");
+                }
+                else if (i >= 2 && i <= 5) {
+                    filasActuales[i].classList.add("bg-green-600");
+                }
+                else if (i >= 18) {
+                    filasActuales[i].classList.add("bg-red-700");
+                }
+                else {
+                    filasActuales[i].classList.add("bg-slate-800");
+                }
             }
-            else if (i === 5) {
-                filasActuales[i].classList.add("bg-green-600");
-            }
-            else if (i >= 17) {
-                filasActuales[i].classList.add("bg-red-700");
-            }
-            else {
-                filasActuales[i].classList.add("bg-slate-800");
-            }
+
+        }
+    }
+
+    function cambiarCabecera() {
+        const h1 = document.getElementsByTagName("h1")[0];
+        const header = document.getElementsByTagName("header")[0];
+        if (ligaActual == "ESP1") {
+            header.className = "text-center py-8 bg-slate-800 shadow-md mb-8 border-b-4 border-red-500";
+            h1.textContent = "LaLiga EA Sports";
+        }
+        else if (ligaActual == "ESP2") {
+            header.className = "text-center py-8 bg-slate-800 shadow-md mb-8 border-b-4 border-cyan-500";
+            h1.textContent = "LaLiga Hypermotion";
         }
     }
 
 });
+
+
+
 
 function generarCalendario(ligaId) {
     const containerJornadas = document.getElementById("contenedor-jornadas");
@@ -450,7 +485,7 @@ function generarCalendario(ligaId) {
 
             const tdImgLocal = document.createElement("td");
             const imgLocal = document.createElement("img");
-            imgLocal.src = `../img/laliga/${escudosEquipos[ligaId][partido.local]}`;
+            imgLocal.src = `../img/${ligaId}/${escudosEquipos[ligaId][partido.local]}`;
             imgLocal.alt = partido.local;
             tdImgLocal.appendChild(imgLocal);
 
@@ -473,7 +508,7 @@ function generarCalendario(ligaId) {
 
             const tdImgVisit = document.createElement("td");
             const imgVisit = document.createElement("img");
-            imgVisit.src = `../img/laliga/${escudosEquipos[ligaId][partido.visitante]}`;
+            imgVisit.src = `../img/${ligaId}/${escudosEquipos[ligaId][partido.visitante]}`;
             imgVisit.alt = partido.visitante;
             tdImgVisit.appendChild(imgVisit);
 
@@ -495,4 +530,85 @@ function generarCalendario(ligaId) {
 
     }
 
+}
+
+function generarTablaClasif(ligaId) {
+    const cuerpoTabla = document.getElementById("cuerpo-clasificacion");
+    cuerpoTabla.innerHTML = ""; //limpiar datos
+
+    const equipos = Object.keys(escudosEquipos[ligaId]);
+
+    for (let i = 0; i < equipos.length; i++) {
+        const nombreEquipo = equipos[i];
+        const rutaEscudo = escudosEquipos[ligaId][nombreEquipo];
+
+        const tr = document.createElement("tr");
+
+        //Posicion
+        const tdPos = document.createElement("td");
+        tdPos.className = "pos";
+        tdPos.textContent = (i + 1) + ".";
+
+        //Escudo
+        const tdEscudo = document.createElement("td");
+        tdEscudo.className = "escudo";
+        const imgEscudo = document.createElement("img");
+        imgEscudo.src = `../img/${ligaId}/${rutaEscudo}`;
+        imgEscudo.alt = nombreEquipo;
+        imgEscudo.width = 30;
+        imgEscudo.height = 30;
+        tdEscudo.appendChild(imgEscudo);
+
+        //Nombre equipo
+        const tdEquipo = document.createElement("td");
+        tdEquipo.className = "equipo";
+        const spanEquipo = document.createElement("span");
+        spanEquipo.textContent = nombreEquipo;
+        tdEquipo.appendChild(spanEquipo);
+
+        //Partidos jugados
+        const tdPJ = document.createElement("td");
+        tdPJ.className = "p_jugados";
+        tdPJ.textContent = 0;
+
+        //Victorias
+        const tdV = document.createElement("td");
+        tdV.className = "v";
+        tdV.textContent = 0;
+
+        //Empates
+        const tdE = document.createElement("td");
+        tdE.className = "e";
+        tdE.textContent = 0;
+
+        //Derrotas
+        const tdD = document.createElement("td");
+        tdD.className = "d";
+        tdD.textContent = 0;
+
+        //Goles a favor
+        const tdGF = document.createElement("td");
+        tdGF.className = "gf";
+        tdGF.textContent = 0;
+
+        //Goles en contra
+        const tdGC = document.createElement("td");
+        tdGC.className = "gc";
+        tdGC.textContent = 0;
+
+        //Diferencia goles
+        const tdDG = document.createElement("td");
+        tdDG.className = "dg";
+        tdDG.textContent = 0;
+
+        //Puntos
+        const tdPtos = document.createElement("td");
+        tdPtos.className = "ptos";
+        tdPtos.textContent = 0;
+
+
+        tr.append(tdPos, tdEscudo, tdEquipo, tdPJ, tdV, tdE, tdD, tdGF, tdGC, tdDG, tdPtos);
+        cuerpoTabla.appendChild(tr);
+
+    }
 }
